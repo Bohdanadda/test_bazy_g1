@@ -1,0 +1,41 @@
+#zadania dodatkowe 
+#przyklady zadań z zadania(2) 
+#zadania 1
+Select p.imie, p.nazwisko, d.nazwa from pracownik p join dzial d on p.dzial=d.id_dzialu;
+#zadania 2
+Select t.nazwa_towaru, k.nazwa_kategori, sm.ilosc from towar t join kategoria k on t.kategoria=k.id_kategori join stan_magazynowy sm on t.id_towaru=sm.towar order by ilosc desc;
+#zadania 3
+SELECT * FROM zamowienie z JOIN status_zamowienia sz ON z.status_zamowienia=sz.id_statusu_zamowienia 
+WHERE sz.nazwa_statusu_zamowienia="anulowane";
+#zadania 4
+select * from klient
+inner join adres_klienta on klient.id_klienta = adres_klienta.klient
+where adres_klienta.miejscowosc = "Olsztyn" and adres_klienta.typ_adresu = 1;
+# zadanie 5, podzapytanie
+select id_jednostki, nazwa from jednostka_miary where id_jednostki not in 
+(select distinct jm from stan_magazynowy);
+
+# left join - tu ważna jest kolejność tabel
+Select distinct jm.id_jednostki, sm.jm from jednostka_miary jm 
+left join stan_magazynowy sm on jm.id_jednostki=sm.jm where towar is null;
+select distinct jm.id_jednostki from jednostk_miary jm left join stan_magazynowy sm on jm.id_jednostki=sm.jm;
+#zadania 6
+select numer_zamowienia, nazwa_towaru, ilosc, cena from pracownik where data_zamowyenia ='2018';
+Select z.numer_zamowienia, t.nazwa_towaru, pz.ilosc, pz.cena from zamowienie z 
+join pozycja_zamowienia pz on z.id_zamowienia=pz.zamowienie 
+join towar t on pz.towar=t.id_towaru where z.data_zamowienia between '2018-01-01' and '2018-12-31';
+#zadania 7
+create table towary_full_info 
+(select t.nazwa_towaru, t.cena_zakupu, 
+k.nazwa_kategori ,sm.ilosc, jm.nazwa
+from __firma_zti.towar t
+join __firma_zti.kategoria k ON k.id_kategori=t.kategoria 
+join __firma_zti.stan_magazynowy sm ON sm.towar=t.id_towaru
+join __firma_zti.jednostka_miary jm on sm.jm=jm.id_jednostki);
+#zadania 8
+select*from pozycja_zamowyenia pz
+inner join (select*from zamowienia order by data_zamowienia asc limit 5) as z on z.id_zamowienia=pz.zamowienie;
+#zadania 9
+SELECT * FROM zamowienie WHERE status_zamowienia NOT IN (5);
+#zadania 10
+select kod from adres_klienta where kod not like'__-___';
